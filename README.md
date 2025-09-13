@@ -7,12 +7,12 @@ Finay is a lightweight Streamlit app that lets you paste a few news/article URLs
 ## Demo
 
 <p align="center">
-  <img src="finay/screenshots/Finay.png" alt="Finay main screen" width="75%">
+  <img src="Finay/screenshots/Finay.png" alt="Finay main screen" width="75%">
 </p>
 
 <p align="center">
-  <img src="finay/screenshots/finay2.png" alt="Articles processed example" width="45%">
-  <img src="finay/screenshots/finay3.png" alt="Q&A with sources example" width="45%">
+  <img src="Finay/screenshots/finay2.png" alt="Articles processed example" width="45%">
+  <img src="Finay/screenshots/finay3.png" alt="Q&A with sources example" width="45%">
 </p>
 
 > Screenshots live under `finay/screenshots/` in this repo. Adjust the relative paths above if you move folders.
@@ -160,35 +160,7 @@ Notes:
 - Your `.env` and generated `.pkl` files are already ignored via `.gitignore`.
 - If you see an auth prompt, log in with your GitHub credentials or use a **Personal Access Token** when prompted for a password.
 
----
 
-## Optional: GitHub Actions (CI) Smoke Test
-
-If you want a basic CI to verify the app installs, create `.github/workflows/ci.yml`:
-
-```yaml
-name: CI
-
-on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.10"
-      - run: python -m venv .venv && source .venv/bin/activate && pip install -r finay/finay/requirements.txt
-```
-
-This keeps the build fast and ensures dependencies install cleanly.
-
----
 
 ## License
 
