@@ -1,6 +1,6 @@
 # Finay (Finance + Vinay lol) - A Professional News Research & Analysis Tool
 
-Finay is a lightweight Streamlit app that lets you paste a few news/article URLs, build a local semantic index with FAISS embeddings, and ask targeted questions to extract key insights with source citations. It is designed for quick financial/business news triage with a clean, minimalist UI.
+Finay is a lightweight Streamlit app that lets you paste a few news/article URLs, build a local semantic index with FAISS embeddings, and ask targeted questions to extract key insights with source citations. It is designed for quick financial/business news triage.
 
 ---
 
