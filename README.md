@@ -7,12 +7,12 @@ Finay is a lightweight Streamlit app that lets you paste a few news/article URLs
 ## Demo
 
 <p align="center">
-  <img src="Finay/screenshots/Finay.png" alt="Finay main screen" width="75%">
+  <img src="screenshots/Finay.png" alt="Finay main screen" width="75%">
 </p>
 
 <p align="center">
-  <img src="Finay/screenshots/finay2.png" alt="Articles processed example" width="45%">
-  <img src="Finay/screenshots/finay3.png" alt="Q&A with sources example" width="45%">
+  <img src="screenshots/finay2.png" alt="Articles processed example" width="45%">
+  <img src="screenshots/finay3.png" alt="Q&A with sources example" width="45%">
 </p>
 
 > Screenshots live under `finay/screenshots/` in this repo. Adjust the relative paths above if you move folders.
