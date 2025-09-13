@@ -132,33 +132,6 @@ To refresh the knowledge base, change the URLs and re‑process.
   Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
   ```
 
----
-
-## Publish to GitHub (Step‑by‑Step)
-
-Below are clean steps for **Windows PowerShell**. Replace `YOUR-USERNAME` and `finay` with your values.
-
-1. **Create a new empty repository on GitHub** named `finay` (no README, no .gitignore — we already have them).
-2. In PowerShell, go to the repo root (the folder that contains `finay/` and this `README.md`):
-   ```powershell
-   cd path\to\your\project\root
-   git init
-   git add .
-   git commit -m "Initial commit: Finay app"
-   ```
-3. **Set the main branch and remote**:
-   ```powershell
-   git branch -M main
-   git remote add origin https://github.com/YOUR-USERNAME/finay.git
-   ```
-4. **Push**:
-   ```powershell
-   git push -u origin main
-   ```
-
-Notes:
-- Your `.env` and generated `.pkl` files are already ignored via `.gitignore`.
-- If you see an auth prompt, log in with your GitHub credentials or use a **Personal Access Token** when prompted for a password.
 
 
 
