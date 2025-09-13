@@ -1,79 +1,203 @@
-# Finay: Professional News Research Tool
+# Finay — Professional News Research & Analysis Tool
 
-Finay is a sophisticated news research tool designed for seamless information retrieval and analysis. Users can input article URLs and ask questions to receive intelligent insights from financial and business news domains.
+Finay is a lightweight Streamlit app that lets you paste a few news/article URLs, build a local semantic index with FAISS embeddings, and ask targeted questions to extract key insights with source citations. It is designed for quick financial/business news triage with a clean, minimalist UI.
 
-## Overview
+---
 
-Finay leverages advanced natural language processing to analyze news articles and provide accurate, source-cited responses to user queries. The interface features a clean, Notion-inspired design that prioritizes functionality and professional aesthetics.
+## Demo
+
+<p align="center">
+  <img src="finay/screenshots/Finay.png" alt="Finay main screen" width="75%">
+</p>
+
+<p align="center">
+  <img src="finay/screenshots/finay2.png" alt="Articles processed example" width="45%">
+  <img src="finay/screenshots/finay3.png" alt="Q&A with sources example" width="45%">
+</p>
+
+> Screenshots live under `finay/screenshots/` in this repo. Adjust the relative paths above if you move folders.
+
+---
 
 ## Features
 
-- **Multi-URL Processing**: Load up to 3 article URLs simultaneously for comprehensive analysis
-- **Advanced Text Processing**: Utilizes LangChain's UnstructuredURL Loader for robust content extraction
-- **Intelligent Embeddings**: Constructs embedding vectors using OpenAI's embeddings combined with FAISS for efficient similarity search
-- **Source Attribution**: Provides transparent source citations for all generated responses
-- **Professional Interface**: Clean, minimalist design inspired by Notion's aesthetic principles
-- **Persistent Storage**: Saves processed embeddings locally for quick retrieval
+- Process 1–3 article URLs at a time using LangChain’s `UnstructuredURLLoader`
+- Split content into chunks with `RecursiveCharacterTextSplitter`
+- Embed with `OpenAIEmbeddings` and store locally in FAISS (`.pkl` file)
+- Ask questions over the processed set via `RetrievalQAWithSourcesChain`
+- Persist the vector store on disk so you don’t need to re-process every run
+- Simple, Notion‑inspired UI built with Streamlit
 
-## Installation
+---
 
-1. Clone this repository to your local machine:
+## Tech Stack
 
-```bash
-git clone https://github.com/yourusername/finay.git
-```
+- Python 3.10+
+- Streamlit
+- LangChain
+- OpenAI API (for embeddings and LLM)
+- FAISS (CPU)
 
-2. Navigate to the project directory:
+See `finay/requirements.txt` for exact package list.
 
-```bash
-cd finay
-```
-
-3. Install the required dependencies:
-
-```bash
-pip install -r requirements.txt
-```
-
-4. Set up your OpenAI API key by creating a `.env` file in the project root:
-
-```bash
-OPENAI_API_KEY=your_api_key_here
-```
-
-## Usage
-
-1. Run the Streamlit application:
-
-```bash
-streamlit run main.py
-```
-
-2. The application will open in your default web browser
-
-3. Using Finay:
-   - Enter up to 3 article URLs in the sidebar
-   - Click "Process Articles" to analyze the content
-   - Wait for the processing to complete
-   - Enter your question in the main input field
-   - Receive comprehensive answers with source citations
+---
 
 ## Project Structure
 
 ```
 finay/
-│
-├── main.py                 # Main application file
-├── requirements.txt        # Python dependencies
-├── .env                   # Environment variables (create this)
-├── faiss_store_openai.pkl # Saved FAISS index (generated)
-└── README.md              # Documentation
+├── finay/
+│   ├── main.py               # Streamlit application
+│   ├── requirements.txt      # Python dependencies
+│   ├── setup_finay.py        # Optional one‑time setup helper
+│   ├── .gitignore            # Ignoring env, cache, large artifacts
+│   ├── .env                  # Your API key goes here (not committed)
+│   ├── faiss_store.pkl       # Vector store (generated)
+│   ├── notebooks/.gitkeep    # Placeholder for experiments
+│   └── screenshots/          # PNG screenshots used in this README
+│       ├── Finay.png
+│       ├── finay2.png
+│       └── finay3.png
+└── README.md                 # This file (you can keep at repo root)
 ```
+
+> Note: The app expects to read/write the FAISS store (e.g., `faiss_store.pkl`) in the same folder as `main.py` unless you modify the path in code.
+
+---
+
+## Prerequisites
+
+1. **Python** 3.10 or newer
+2. **OpenAI API key**
+   - Create a `.env` file next to `main.py` with:
+     ```bash
+     OPENAI_API_KEY=your_api_key_here
+     ```
+   - The `.gitignore` already excludes `.env` so you won’t accidentally commit your key.
+
+---
+
+## Setup & Run Locally
+
+From the repo root:
+
+```bash
+# 1) Create and activate a virtual environment (recommended)
+python -m venv .venv
+# Windows PowerShell:
+.\.venv\Scripts\Activate.ps1
+# macOS/Linux:
+# source .venv/bin/activate
+
+# 2) Install dependencies
+pip install -r finay/finay/requirements.txt
+
+# 3) Add your API key to finay/finay/.env
+#    OPENAI_API_KEY=...
+
+# 4) Launch the app
+streamlit run finay/finay/main.py
+```
+
+Then open the local URL that Streamlit prints (usually `http://localhost:8501`).
+
+---
+
+## How to Use
+
+1. Paste up to 3 article/news URLs.
+2. Click **Process Articles** — this loads, splits, and embeds the content and saves a FAISS store to disk.
+3. Ask a question in the **Ask a Question** box (e.g., “What are the key takeaways and risks?”).
+4. Read the **Answer** and verify with the **Sources** list.
+
+To refresh the knowledge base, change the URLs and re‑process.
+
+---
+
+## Configuration Notes
+
+- **Environment variables**: Only `OPENAI_API_KEY` is required.
+- **Vector store location**: By default, a `faiss_store.pkl` is written in the app folder. You can safely delete it to force a full rebuild.
+- **Library versions**: `openai==0.28.0` is pinned in `requirements.txt` to match the LangChain usage in this app.
+
+---
+
+## Troubleshooting
+
+- **“Missing required library” in app**: Install packages from `requirements.txt` inside the same virtual environment you are using to run Streamlit.
+- **“OpenAI API Key not found”**: Ensure you created `.env` next to `main.py` and that it contains `OPENAI_API_KEY=...`. Restart Streamlit after saving.
+- **Dependency conflicts**: If you previously installed different versions globally, prefer a fresh virtualenv as shown above.
+- **Windows PowerShell execution policy**: If activation fails, run PowerShell as Administrator and execute:
+  ```powershell
+  Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+  ```
+
+---
+
+## Publish to GitHub (Step‑by‑Step)
+
+Below are clean steps for **Windows PowerShell**. Replace `YOUR-USERNAME` and `finay` with your values.
+
+1. **Create a new empty repository on GitHub** named `finay` (no README, no .gitignore — we already have them).
+2. In PowerShell, go to the repo root (the folder that contains `finay/` and this `README.md`):
+   ```powershell
+   cd path\to\your\project\root
+   git init
+   git add .
+   git commit -m "Initial commit: Finay app"
+   ```
+3. **Set the main branch and remote**:
+   ```powershell
+   git branch -M main
+   git remote add origin https://github.com/YOUR-USERNAME/finay.git
+   ```
+4. **Push**:
+   ```powershell
+   git push -u origin main
+   ```
+
+Notes:
+- Your `.env` and generated `.pkl` files are already ignored via `.gitignore`.
+- If you see an auth prompt, log in with your GitHub credentials or use a **Personal Access Token** when prompted for a password.
+
+---
+
+## Optional: GitHub Actions (CI) Smoke Test
+
+If you want a basic CI to verify the app installs, create `.github/workflows/ci.yml`:
+
+```yaml
+name: CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+      - run: python -m venv .venv && source .venv/bin/activate && pip install -r finay/finay/requirements.txt
+```
+
+This keeps the build fast and ensures dependencies install cleanly.
+
+---
 
 ## License
 
-This project is licensed under the MIT License.
+MIT — see `LICENSE` if you add one.
 
-## Support
+---
 
-For issues or questions, please open an issue on GitHub.
+## Acknowledgments
+
+- LangChain
+- FAISS
+- Streamlit
